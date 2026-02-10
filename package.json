@@ -1,0 +1,36 @@
+{
+  "name": "claude-glance",
+  "version": "1.0.0",
+  "description": "At-a-glance session summary tracking for the Claude Code statusline",
+  "license": "MIT",
+  "author": "Claude Code Community",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibro45/claude-glance"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "statusline",
+    "session-summary",
+    "glance",
+    "productivity"
+  ],
+  "bin": {
+    "claude-glance": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "src/",
+    "scripts/",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "enquirer": "^2.4.1"
+  }
+}

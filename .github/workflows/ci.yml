@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: shellcheck
+        run: shellcheck scripts/*.sh
+
+      - name: node --check
+        run: |
+          node --check bin/cli.js
+          node --check src/installer.js
+          node --check src/uninstaller.js
+          node --check src/utils.js
+
+  smoke:
+    name: Smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: CLI --help
+        run: node bin/cli.js --help | grep -q "claude-glance"

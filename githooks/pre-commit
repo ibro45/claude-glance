@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Pre-commit hook: lint staged .sh and .js files
+set -euo pipefail
+
+errors=0
+
+# Lint staged shell scripts with shellcheck
+staged_sh=$(git diff --cached --name-only --diff-filter=ACM -- '*.sh')
+if [ -n "$staged_sh" ]; then
+    echo "shellcheck: $staged_sh"
+    if ! echo "$staged_sh" | xargs shellcheck; then
+        errors=1
+    fi
+fi
+
+# Syntax-check staged JS files with node --check
+staged_js=$(git diff --cached --name-only --diff-filter=ACM -- '*.js')
+if [ -n "$staged_js" ]; then
+    for f in $staged_js; do
+        echo "node --check: $f"
+        if ! node --check "$f"; then
+            errors=1
+        fi
+    done
+fi
+
+if [ "$errors" -ne 0 ]; then
+    echo "Pre-commit checks failed. Fix errors before committing."
+    exit 1
+fi

@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/session-summary/scripts/session-start.sh",
+            "timeout": 5000,
+            "description": "Inject session summary protocol at start"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/session-summary/scripts/prompt-submit.sh",
+            "timeout": 5000,
+            "description": "Nudge if summary becomes stale (>5 minutes)"
+          }
+        ]
+      }
+    ]
+  }
+}
