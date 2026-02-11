@@ -308,7 +308,6 @@ async function install(flags = []) {
   }
 
   // Simple confirmation - just wait for Enter
-  let proceed = true; // default to true on Enter
   try {
     await enquirer.prompt({
       type: 'input',
@@ -319,10 +318,6 @@ async function install(flags = []) {
     });
   } catch (err) {
     // Ctrl+C
-    console.log(`\n  ${c.yellow('✗')} Cancelled.\n`);
-    return;
-  }
-  if (!proceed) {
     console.log(`\n  ${c.yellow('✗')} Cancelled.\n`);
     return;
   }

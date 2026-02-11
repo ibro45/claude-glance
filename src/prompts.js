@@ -104,14 +104,20 @@ async function askChoiceInteractive(question, choices, options = {}) {
   }
 
   return new Promise((resolve) => {
-    render();
+    let cleaned = false;
+
+    const cleanup = () => {
+      if (cleaned) return;
+      cleaned = true;
+      showCursor();
+      stdin.setRawMode(false);
+      stdin.pause();
+      stdin.removeListener('data', onData);
+    };
 
     const onData = (key) => {
       if (key === KEYS.CTRL_C) {
-        showCursor();
-        stdin.setRawMode(false);
-        stdin.pause();
-        stdin.removeListener('data', onData);
+        cleanup();
         console.log('\n');
         process.exit(0);
         return;
@@ -134,10 +140,7 @@ async function askChoiceInteractive(question, choices, options = {}) {
       }
 
       if (key === KEYS.ENTER) {
-        showCursor();
-        stdin.setRawMode(false);
-        stdin.pause();
-        stdin.removeListener('data', onData);
+        cleanup();
 
         // Clear the prompt and show selection
         clearLines(lineCount);
@@ -165,6 +168,7 @@ async function askChoiceInteractive(question, choices, options = {}) {
     };
 
     stdin.on('data', onData);
+    render();
   });
 }
 
@@ -216,14 +220,20 @@ async function askConfirmInteractive(question, defaultYes = true) {
   }
 
   return new Promise((resolve) => {
-    render();
+    let cleaned = false;
+
+    const cleanup = () => {
+      if (cleaned) return;
+      cleaned = true;
+      showCursor();
+      stdin.setRawMode(false);
+      stdin.pause();
+      stdin.removeListener('data', onData);
+    };
 
     const onData = (key) => {
       if (key === KEYS.CTRL_C) {
-        showCursor();
-        stdin.setRawMode(false);
-        stdin.pause();
-        stdin.removeListener('data', onData);
+        cleanup();
         console.log('\n');
         process.exit(0);
         return;
@@ -243,10 +253,7 @@ async function askConfirmInteractive(question, defaultYes = true) {
       }
 
       if (key === KEYS.ENTER) {
-        showCursor();
-        stdin.setRawMode(false);
-        stdin.pause();
-        stdin.removeListener('data', onData);
+        cleanup();
 
         clearLines(lineCount);
         const answer = yesSelected ? 'Yes' : 'No';
@@ -257,6 +264,7 @@ async function askConfirmInteractive(question, defaultYes = true) {
     };
 
     stdin.on('data', onData);
+    render();
   });
 }
 
@@ -297,24 +305,27 @@ async function askInputInteractive(question, defaultValue = '') {
   }
 
   return new Promise((resolve) => {
-    render();
+    let cleaned = false;
+
+    const cleanup = () => {
+      if (cleaned) return;
+      cleaned = true;
+      showCursor();
+      stdin.setRawMode(false);
+      stdin.pause();
+      stdin.removeListener('data', onData);
+    };
 
     const onData = (key) => {
       if (key === KEYS.CTRL_C) {
-        showCursor();
-        stdin.setRawMode(false);
-        stdin.pause();
-        stdin.removeListener('data', onData);
+        cleanup();
         console.log('\n');
         process.exit(0);
         return;
       }
 
       if (key === KEYS.ENTER) {
-        showCursor();
-        stdin.setRawMode(false);
-        stdin.pause();
-        stdin.removeListener('data', onData);
+        cleanup();
 
         clearLines(lineCount);
         const finalValue = input || defaultValue;
@@ -339,6 +350,7 @@ async function askInputInteractive(question, defaultValue = '') {
     };
 
     stdin.on('data', onData);
+    render();
   });
 }
 
