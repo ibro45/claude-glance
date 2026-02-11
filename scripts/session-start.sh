@@ -48,18 +48,26 @@ fi
 # Output protocol as plain text (becomes additionalContext)
 cat <<EOF
 <session-summary>
-Keep the statusline updated with the topic you're working on. Users see this in real-time.
+## REQUIRED: Update Statusline
 
-Only update when the **topic changes** — not when your approach or phase within a topic changes. One update per topic is enough.
+You MUST update the statusline when you begin working on a NEW TOPIC.
+Users see this summary in real-time in their terminal.
 
-Format: 3-5 words describing the topic, gerund form
-✓ "Adding auth middleware"
-✓ "Fixing login race condition"
-✓ "Refactoring database queries"
-✗ "Exploring auth middleware" then "Implementing auth middleware" (don't update twice for the same topic)
-✗ "Working on code" (too vague)
-✗ "Starting to look at tests" (don't narrate your process)
+### When to Update
+- When the user gives you a new task or question (new topic)
+- NOT when your approach changes within the same task
+- One update per topic is sufficient
 
-**Command:** ${UPDATE_COMMAND} "summary" ${session_id}
+### Format
+3-5 words, gerund form (ending in -ing):
+- "Adding auth middleware"
+- "Fixing login race condition"
+- "Refactoring database queries"
+
+Avoid: "Working on code" (too vague) or multiple updates for the same task.
+
+### Action
+Execute this bash command when the topic changes:
+${UPDATE_COMMAND} "your-summary-here" ${session_id}
 </session-summary>
 EOF
