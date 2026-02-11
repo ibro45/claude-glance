@@ -23,10 +23,17 @@ else
     TMP_BASE="/tmp"
 fi
 
-# Construct scratchpad path
+# Read scratchpad path from session index (written by session-start.sh)
 uid=$(id -u)
-escaped_cwd=$(echo "$PWD" | sed 's|^/||; s|/|-|g')
-scratchpad="${TMP_BASE}/claude-${uid}/-${escaped_cwd}/${SESSION_ID}/scratchpad"
+index_file="${TMP_BASE}/claude-${uid}/session-index/${SESSION_ID}"
+
+if [ -f "$index_file" ]; then
+    scratchpad=$(head -n 1 "$index_file")
+else
+    # Fallback: derive from $PWD (may diverge if CWD changed since session start)
+    escaped_cwd=$(echo "$PWD" | sed 's|^/||; s|/|-|g')
+    scratchpad="${TMP_BASE}/claude-${uid}/-${escaped_cwd}/${SESSION_ID}/scratchpad"
+fi
 
 mkdir -p "$scratchpad" 2>/dev/null
 echo "$SUMMARY" > "${scratchpad}/session-summary.txt"

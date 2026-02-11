@@ -46,7 +46,7 @@ async function main() {
     case 'update': {
       // update <summary> <session_id>
       // Called by Claude to update the session summary
-      const { execSync } = require('child_process');
+      const { execFileSync } = require('child_process');
       const path = require('path');
 
       // Get the script location (relative to package root)
@@ -61,9 +61,9 @@ async function main() {
         process.exit(1);
       }
 
-      // Execute the bash script
+      // Execute the bash script (execFileSync avoids shell injection)
       try {
-        execSync(`bash "${updateScript}" '${summary}' '${sessionId}'`, {
+        execFileSync('bash', [updateScript, summary, sessionId], {
           stdio: 'inherit'
         });
       } catch (error) {

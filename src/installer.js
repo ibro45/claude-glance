@@ -29,7 +29,6 @@ const {
 const SCRIPTS = [
   'scripts/statusline.sh',
   'scripts/session-start.sh',
-  'scripts/prompt-submit.sh',
   'scripts/update-summary.sh',
   'lib/parse-json.js',
 ];
@@ -42,18 +41,7 @@ function buildHooksConfig(installDir) {
         hooks: [
           {
             type: 'command',
-            command: `bash ${path.join(installDir, 'scripts', 'session-start.sh')}`,
-            timeout: 5000,
-          },
-        ],
-      },
-    ],
-    UserPromptSubmit: [
-      {
-        hooks: [
-          {
-            type: 'command',
-            command: `bash ${path.join(installDir, 'scripts', 'prompt-submit.sh')}`,
+            command: `bash '${path.join(installDir, 'scripts', 'session-start.sh')}'`,
             timeout: 5000,
           },
         ],
@@ -66,7 +54,7 @@ function buildHooksConfig(installDir) {
 function buildStatuslineConfig(installDir, customPath = null) {
   return {
     type: 'command',
-    command: customPath || `bash ${path.join(installDir, 'scripts', 'statusline.sh')}`,
+    command: customPath || `bash '${path.join(installDir, 'scripts', 'statusline.sh')}'`,
   };
 }
 
